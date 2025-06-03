@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head.ejs') %>
+   <%- include('../partials/nav.ejs') %>
+</head>
+<body>
+    <h2 class="mt-4 ">LOGIN PAGE</h2>
+<form class="row g-3 needs-validation mt-5" action="/user/signin" method="post">
+    <div class="col-md-4">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" name="email" id="email"  required>
+    </div>
+    <div class="col-md-4">
+      <label for="password" class="form-label">Password</label>
+      <div class="input-group has-validation">
+        <input type="password" class="form-control" name="password" id="password" aria-describedby="password" required>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">SIGN IN</button>
+    </div>

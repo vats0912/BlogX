@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <%- include('../partials/nav.ejs') %>
+</head>
+<body>
+    <h2 class="mt-4">SIGNUP FORM</h2>
+    <form class="row g-3 needs-validation mt-5" action="/user/signup" method="post">
+    <div class="col-md-4">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" name="fullName"  required>
+    </div>
+    <div class="col-md-4">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" name="email"  id="email" required>
+    </div>
+
+    <div class="col-md-4">
+      <label for="password" class="form-label">Password</label>
+      <div class="input-group has-validation">
+        <input type="text" class="form-control" name="password" id="password" aria-describedby="password" required>
+      </div>
+    </div>
+    
+    <div class="col-12 ">
+      <button class="btn btn-primary" type="submit">SIGN UP</button>
+    </div>
+        <%- include('../partials/scripts.ejs') %>
+    </body>
+    </html>

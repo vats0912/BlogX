@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head.ejs') %>
+   <%- include('../partials/nav.ejs') %>
+</head>
+
+<body>
+    <form action="/blog" enctype="multipart/form-data"  method="post">
+    <div class="mb-3 mt-4 ms-4">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="eg-About Web3" required>
+      </div>
+      <div class="mb-3 ms-4">
+        <label for="coverImageUrl" class="form-label">Cover Image</label>
+        <input type="file" class="form-control" id="coverImageUrl" name="coverImageUrl">
+      </div>
+      <div class="mb-3 ms-4">
+        <label for="body" class="form-label">Blog</label>
+        <textarea class="form-control" name=body id="body" rows="5" required></textarea>
+      </div>
+      <div class="col-12 ms-4">
+    <button class="btn btn-primary" type="submit">Submit blog</button>
+  </div>
+</form>
+
+    <%- include('../partials/scripts.ejs') %>
+</body>
