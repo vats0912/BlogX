@@ -1,54 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head.ejs') %>
-    <title>BLOG PAGE</title>
+  <%- include('../partials/head.ejs') %>
+  <title>BLOG PAGE</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .blog-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-cover img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .author-info img {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .btn-action {
+      margin-left: 10px;
+      font-size: 0.85rem;
+    }
+
+    .comment-box {
+      border-top: 1px solid #dee2e6;
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+  </style>
 </head>
+
 <body>
-    <%- include('../partials/nav.ejs') %>
-    <% if (locals.blog) { %>
-    <div class="container ms-5 ">
-    <div class="d-flex flex-row justify-content-center"><h2 class="mt-4 "><%= blog.title %></h2></div>
-    <span class="d-flex flex-row justify-content-center mt-4"><img src="<%= blog.coverImageUrl %>" class="mt-3" width="400px" alt="" ></span>
-    </div>
-    <div class="mt-4 ms-5">
-    <p class="mt-4"><%= blog.body %></p>
+  <%- include('../partials/nav.ejs') %>
+
+  <% if (locals.blog) { %>
+  <div class="container blog-container">
+    <!-- Title & Image -->
+    <h2 class="text-center mb-4"><%= blog.title %></h2>
+    <div class="blog-cover text-center mb-4">
+      <img src="<%= blog.coverImageUrl %>" alt="Cover Image">
     </div>
 
-    <div class="mt-4 ms-5">
-        <span class="" ><img src="/public/<%= blog.createdBy.profilepic %>" width="50px" alt="profile"></span>
-        <span class="mx-2">Created by: <%= blog.createdBy.fullName %></span>
+    <!-- Blog Body -->
+    <p class="mb-4"><%= blog.body %></p>
+
+    <!-- Blog Info -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap">
+      <div class="author-info d-flex align-items-center">
+        <div class="ms-3">
+          <strong><%= blog.createdBy.fullName %></strong><br>
+          <small class="text-muted">Posted on: <%= new Date(blog.createdAt).toLocaleString() %></small>
+        </div>
+      </div>
+
+      <% if (user && user._id.toString() === blog.createdBy._id.toString()) { %>
+        <div class="mt-3 mt-md-0">
+          <a href="/blog/edit/<%= blog._id %>?_method=PUT" class="btn btn-outline-secondary btn-sm btn-action">Edit</a>
+          <form action="/blog/delete/<%= blog._id %>" method="POST" style="display:inline;">
+            <button class="btn btn-outline-danger btn-sm btn-action" onclick="return confirm('Are you sure?')">Delete</button>
+          </form>
+        </div>
+      <% } %>
     </div>
 
-<% if (locals.user) { %>
-    <h3 class="ms-4 mt-4">Comments:(<%= comments.length %>)</h3>
-    <form class="needs validation" action="/blog/comment/<%= blog._id %>" method="post">
-    <div class="mt-4 ms-4">
-        <label for="title" class="form-label">Comment</label>
-        <input type="text" class="form-control" id="content" name="content" placeholder="Enter your comment" required >
-    </div>
-    <div class="col-4 ms-4 mt-2">
-        <button class="btn btn-primary mt-3" type="submit">Submit comment</button>
-    </div>
-    </form>
+    <!-- Like Button -->
+
+    <!-- Comments Section -->
+    <% if (user) { %>
+      <div class="comment-box">
+        <h5>Leave a Comment</h5>
+        <form action="/blog/comment/<%= blog._id %>" method="post" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="content" class="form-label">Your Comment</label>
+            <input type="text" class="form-control" id="content" name="content" required>
+            <div class="invalid-feedback">Comment cannot be empty.</div>
+          </div>
+          <div class="d-grid">
+            <button class="btn btn-primary" type="submit">Post Comment</button>
+          </div>
+        </form>
+      </div>
     <% } %>
-    
-    <% if (locals.comments) { %>
-     <h4 class="ms-4 mt-4">Posted comments</h4>
-     <div class="mt-4 ms-4">
+
+    <!-- Display Comments -->
+    <% if (comments && comments.length > 0) { %>
+      <div class="mt-5">
+        <h5>Comments (<%= comments.length %>)</h5>
         <% comments.forEach(comment => { %>
-         <div class="ms-4 mt-2">
-            <span class="" ><img src="/public/<%=comment.createdBy.profilepic%>" width="50px" alt="profile"></span>
-            <span class="mx-2"><%= comment.createdBy.fullName %></span>
-         </div>
-         <div><pre><%= comment.content %></pre></div>
+          <div class="mt-4">
+            <div class="d-flex align-items-center">
+              <div class="ms-3">
+                <strong><%= comment.createdBy.fullName %></strong>
+                <br>
+                <small class="text-muted">Commented on: <%= new Date(comment.createdAt).toLocaleString() %></small>
+              </div>
+            </div>
+            <div class="mt-2">
+              <pre><%= comment.content %></pre>
+            </div>
+          </div>
         <% }) %>
-     </div>
+      </div>
+    <% } else if (user) { %>
+      <p class="text-muted mt-3">No comments yet. Be the first to comment!</p>
     <% } %>
+  </div>
+  <% } %>
 
-    <% } %>
+  <%- include('../partials/scripts.ejs') %>
 
-    <%- include('../partials/scripts.ejs') %>
+  <script>
+    // Bootstrap validation
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>
-

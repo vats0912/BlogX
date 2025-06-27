@@ -1,29 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+    .card {
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+  </style>
 </head>
 <body>
-    <%- include('../partials/nav.ejs') %>
-    <div class="container mt-3 ">
-      <% if (locals.user) { %>
-        <div class="row row-cols-4">
-    <% blog.forEach(blog => { %>
-      <div class="col mt-4">
-        <div class="card col" style="width: 18rem">
-            <img src="<%=blog.coverImageUrl %>" class="card-img-top" width="100px" height="200px" alt="...">
-            <div class="card-body">
-              <h5 class="card-title"><%= blog.title %></h5>
-              <a href="/blog/<%= blog._id %>" class="btn btn-primary stretched-link">View</a>
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="container mt-4">
+    <% if (locals.user && locals.blog && locals.blog.length > 0) { %>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <% blog.forEach(blog => { %>
+          <div class="col">
+            <div class="card h-100">
+              <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="<%= blog.title %>">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title"><%= blog.title %></h5>
+      <p class="card-text text-muted mb-1" style="font-size: 0.9rem;">
+                By <strong><%= blog.createdBy ? blog.createdBy.fullName : 'Unknown' %></strong>
+      </p>
+      <p class="card-text text-muted" style="font-size: 0.85rem;">
+        <%= new Date(blog.createdAt).toLocaleDateString() %>
+      </p>
+                <a href="/blog/<%= blog._id %>" class="btn btn-primary mt-auto stretched-link">View</a>
+              </div>
             </div>
           </div>
-          </div>
-          <% }) %>
-        </div>
-        </div>
-        <% } %>
-    <%- include('../partials/scripts.ejs') %>
-    
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-info text-center mt-5">
+        Please signup or signin for accessing this application
+      </div>
+    <% } %>
+  </div>
 
+  <%- include('../partials/scripts.ejs') %>
 </body>
 </html>
