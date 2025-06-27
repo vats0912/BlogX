@@ -15,6 +15,11 @@ createdBy:{
 blogid:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"Blog"
+},
+
+createdAt: {
+  type: Date,
+  default: Date.now
 }
 
 },{timestamps:true})

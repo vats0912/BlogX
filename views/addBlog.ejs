@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('../partials/head.ejs') %>
@@ -25,4 +25,78 @@
 </form>
 
     <%- include('../partials/scripts.ejs') %>
+</body> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <%- include('../partials/nav.ejs') %>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .blog-card {
+            max-width: 700px;
+            margin: 60px auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="card blog-card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Create a New Blog</h3>
+                <form action="/blog" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Blog Title</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Exploring Web3" required>
+                        <div class="invalid-feedback">Title is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="coverImageUrl" class="form-label">Cover Image</label>
+                        <input type="file" class="form-control" id="coverImageUrl" name="coverImageUrl" accept="image/*">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="body" class="form-label">Blog Content</label>
+                        <textarea class="form-control" id="body" name="body" rows="6" placeholder="Write your blog here..." required></textarea>
+                        <div class="invalid-feedback">Blog content cannot be empty.</div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-primary" type="submit">Submit Blog</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <%- include('../partials/scripts.ejs') %>
+
+    <script>
+        // Bootstrap validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
+</html>

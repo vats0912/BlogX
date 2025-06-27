@@ -9,7 +9,7 @@ const userRouter=require('./routes/user')
 const blogRouter=require('./routes/blog')
 const cookieParser = require('cookie-parser')
 const checkToken=require('./service/authentication')
-connectMONGODB("mongodb://127.0.0.1:27017/blog-data").then(()=>{
+connectMONGODB("YOUR DATABASE URL").then(()=>{
     console.log('Server Started and MONGODB connected')
 })
 
@@ -24,7 +24,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/',async (req,res)=>{
     try{
-    const allBlogs=await blog.find({})
+    const allBlogs=await blog.find({}).populate('createdBy', 'fullName');
     const user=req.user
     res.render('home.ejs',{
         user,

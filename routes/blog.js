@@ -38,6 +38,26 @@ res.render('blog',{
 })
 })
 
+router.get('/edit/:id', async (req, res) => {
+  const id  = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+  return res.status(400).send('Invalid blog ID');
+}
+
+  try {
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).send('Blog not found');
+    }
+
+    res.render('edit', { blog }); // assumes views/edit.ejs exists
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 router.post('/', upload.single('coverImageUrl'), async (req, res) => {
   const { title, body } = req.body
   const user=req.user
@@ -65,6 +85,31 @@ await Comment.create({
 
 res.redirect(`/blog/${id}`)
 
+})
+
+router.post('/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, body } = req.body;
+
+  try {
+    await Blog.findByIdAndUpdate(id, { title, body });
+    res.redirect(`/blog/${id}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to update blog');
+  }
+});
+
+router.post(`/delete/:id`,async(req,res)=>{
+    const id=req.params.id
+     if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send('Invalid blog ID');
+  }
+    const res1=await Blog.findByIdAndDelete(id)
+    if(res1)
+    return res.status(200).send('Deleted Successfully')
+    return res.status(500).send("Error in deleting")
+    
 })
 
 module.exports =

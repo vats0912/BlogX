@@ -1,23 +1,68 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('../partials/head.ejs') %>
-   <%- include('../partials/nav.ejs') %>
+    <%- include('../partials/nav.ejs') %>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-card {
+            max-width: 500px;
+            margin: 80px auto;
+        }
+    </style>
 </head>
 <body>
-    <h2 class="mt-4 ">LOGIN PAGE</h2>
-<form class="row g-3 needs-validation mt-5" action="/user/signin" method="post">
-    <div class="col-md-4">
-      <label for="email" class="form-label">Email</label>
-      <input type="text" class="form-control" name="email" id="email"  required>
-    </div>
-    <div class="col-md-4">
-      <label for="password" class="form-label">Password</label>
-      <div class="input-group has-validation">
-        <input type="password" class="form-control" name="password" id="password" aria-describedby="password" required>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="card login-card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Login</h3>
+                <form class="needs-validation" action="/user/signin" method="post" novalidate>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required>
+                        <div class="invalid-feedback">Please enter a valid email.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
+                        <div class="invalid-feedback">Please enter your password.</div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-primary" type="submit">Sign In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
       </div>
     </div>
 
-    <div class="col-12">
-      <button class="btn btn-primary" type="submit">SIGN IN</button>
-    </div>
+    <script>
+      // Bootstrap validation
+      (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      })();
+    </script>
+</body>
+</html>
