@@ -1,7 +1,7 @@
 const express=require('express')
 const app=express()
 const path=require('path')
-const PORT=3000
+const PORT=process.env.PORT
 const connectMONGODB=require('./connect')
 const blog=require('./models/blog')
 const User=require("./models/user")
@@ -9,7 +9,7 @@ const userRouter=require('./routes/user')
 const blogRouter=require('./routes/blog')
 const cookieParser = require('cookie-parser')
 const checkToken=require('./service/authentication')
-connectMONGODB("YOUR DATABASE URL").then(()=>{
+connectMONGODB(process.env.DATABASE_URL).then(()=>{
     console.log('Server Started and MONGODB connected')
 })
 
