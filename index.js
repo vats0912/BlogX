@@ -9,7 +9,7 @@ const userRouter=require('./routes/user')
 const blogRouter=require('./routes/blog')
 const cookieParser = require('cookie-parser')
 const checkToken=require('./service/authentication')
-connectMONGODB("YOUR DATABASE URL").then(()=>{
+connectMONGODB(process.env.Database_URL).then(()=>{
     console.log('Server Started and MONGODB connected')
 })
 

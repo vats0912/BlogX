@@ -78,7 +78,6 @@ userSchema.static("matchPasswordandGenerateToken", async function (email, passwo
         const token = generateToken(user)
         return token
 
-
 })
 
 const User = mongoose.model('User', userSchema)

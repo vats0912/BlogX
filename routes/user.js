@@ -20,7 +20,7 @@ router.get('/signin',(req,res)=>{
 })
 
 router.get('/logout',(req,res)=>{
- res.clearCookie('token').redirect('/')
+ res.clearCookie('token').redirect('/signin')
 })
    
 
@@ -60,7 +60,7 @@ router.post('/signin',async(req,res)=>{
             error:"INCORRECT USERNAME OR PASSWORD",
         })
     }
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { httpOnly: true,secure:true });
     res.redirect('/')
 })
 

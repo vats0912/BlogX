@@ -31,5 +31,4 @@ return async (req,res,next)=>{
 }
 }
 
-
 module.exports=checkFortoken

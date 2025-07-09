@@ -7,6 +7,7 @@ const multer = require('multer')
 const USER = require('../models/user.js')
 const mongoose=require('mongoose')
 const { log } = require('console')
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, `./uploads/`)
@@ -16,7 +17,9 @@ const storage = multer.diskStorage({
     cb(null, fileName)
   }
 })
+
 const upload = multer({ storage: storage })
+
 router.get('/add-new', async (req, res) => {
   res.render('addBlog', {
     user: req.user,
@@ -51,7 +54,7 @@ router.get('/edit/:id', async (req, res) => {
       return res.status(404).send('Blog not found');
     }
 
-    res.render('edit', { blog }); // assumes views/edit.ejs exists
+    res.render('edit', { blog }); 
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
