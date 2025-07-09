@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken')
-const secret="your-secret-key"
+const secret=process.env.SECRET_KEY
 function generateToken(user){
     const payload={
         fullName:user.fullName,
