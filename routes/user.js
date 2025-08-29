@@ -59,7 +59,7 @@ router.post('/signin', async (req, res) => {
     if (!token) {
       return res.render('signin.ejs', { msg: "Incorrect username or password" });
     }
-    res.cookie('token', token, { httpOnly: true, secure: true });
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production'});
     res.redirect('/');
   } catch (err) {
      res.render('signin.ejs', { msg1: "Something went wrong. Please try again." });
