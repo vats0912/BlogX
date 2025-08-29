@@ -20,7 +20,7 @@ router.get('/signin',(req,res)=>{
 })
 
 router.get('/logout',(req,res)=>{
- res.clearCookie('token').redirect('/signin')
+ res.clearCookie('token').redirect('/user/signin')
 })
    
 
@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
             profilepic: '/public/avatar.jpg'
         });
 
-        return res.redirect('/signin');
+        return res.redirect('/user/signin');
     } catch (err) {
         console.error('Signup error:', err);
         return res.status(500).render('signup', {
@@ -52,16 +52,18 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.post('/signin',async(req,res)=>{
-    const{email,password}=req.body;
-   const token= await USER.matchPasswordandGenerateToken(email,password)
-    if(!token){
-        return res.redirect('signin',{
-            error:"INCORRECT USERNAME OR PASSWORD",
-        })
+router.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const token = await USER.matchPasswordandGenerateToken(email, password);
+    if (!token) {
+      return res.render('signin.ejs', { msg: "Incorrect username or password" });
     }
-    res.cookie('token', token, { httpOnly: true,secure:true });
-    res.redirect('/')
-})
+    res.cookie('token', token, { httpOnly: true, secure: true });
+    res.redirect('/');
+  } catch (err) {
+     res.render('signin.ejs', { msg1: "Something went wrong. Please try again." });
+  }
+});
 
 module.exports=router

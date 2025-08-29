@@ -14,7 +14,6 @@ return async (req,res,next)=>{
 
     const user=await USER.findById({_id:userPayload._id})
     if(!user){
-      console.log("no user")
       req.user=null
       return next()
     }

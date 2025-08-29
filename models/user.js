@@ -57,10 +57,10 @@ try{
 
 userSchema.static("matchPasswordandGenerateToken", async function (email, password) {
     if(!email || !password){
-        throw new Error("No Email or Password")
+        throw new Error('Incorrect username or password')
     }
     const user = await this.findOne({ email })
-    if (!user) throw new Error("USER NOT FOUND")
+    if (!user) throw new Error('User not found')
     const userSalt = user.salt
     const hashPassword = user.password
     const userProvidedHash = crypto.createHmac('sha256', userSalt)

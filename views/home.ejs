@@ -9,12 +9,20 @@
     .card-img-top {
       height: 200px;
       object-fit: cover;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
     }
     .card {
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-radius: 0.5rem;
     }
     .card:hover {
       transform: scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
     }
   </style>
 </head>
@@ -22,29 +30,46 @@
   <%- include('../partials/nav.ejs') %>
 
   <div class="container mt-4">
-    <% if (locals.user && locals.blog && locals.blog.length > 0) { %>
+    <% if (!locals.user) { %>
+    
+      <div class="alert alert-warning text-center mt-5">
+        You are not logged in. Please <a href="/user/signin" class="alert-link text-decoration-none">Sign in</a> or <a href="/user/signup" class="alert-link text-decoration-none" >Sign up</a> to view or create blogs.
+      </div>
+
+    <% } else if (blog && blog.length > 0) { %>
+      
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <% blog.forEach(blog => { %>
+        <% blog.forEach(blogItem => { %>
           <div class="col">
             <div class="card h-100">
-              <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="<%= blog.title %>">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title"><%= blog.title %></h5>
-      <p class="card-text text-muted mb-1" style="font-size: 0.9rem;">
-                By <strong><%= blog.createdBy ? blog.createdBy.fullName : 'Unknown' %></strong>
-      </p>
-      <p class="card-text text-muted" style="font-size: 0.85rem;">
-        <%= new Date(blog.createdAt).toLocaleDateString() %>
-      </p>
-                <a href="/blog/<%= blog._id %>" class="btn btn-primary mt-auto stretched-link">View</a>
+              <% if (blogItem.coverImageUrl) { %>
+                <img src="<%= blogItem.coverImageUrl %>" class="card-img-top" alt="<%= blogItem.title %>">
+              <% } else { %>
+                <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" alt="No image available">
+              <% } %>
+
+              <div class="card-body">
+                <h5 class="card-title"><%= blogItem.title %></h5>
+
+                <p class="card-text text-muted mb-1" style="font-size: 0.9rem;">
+                  By <strong><%= blogItem.createdBy ? blogItem.createdBy.fullName : 'Unknown' %></strong>
+                </p>
+                
+                <p class="card-text text-muted" style="font-size: 0.85rem;">
+                  <%= blogItem.createdAt ? new Date(blogItem.createdAt).toLocaleDateString() : '' %>
+                </p>
+
+                <a href="/blog/<%= blogItem._id %>" class="btn btn-primary mt-auto stretched-link">View</a>
               </div>
             </div>
           </div>
         <% }) %>
       </div>
+
     <% } else { %>
+  
       <div class="alert alert-info text-center mt-5">
-        Please signup or signin for accessing this application
+        No blogs available. Create a new one from the <strong>Add Blog</strong> option.
       </div>
     <% } %>
   </div>

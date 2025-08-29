@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
-function connectMONGODB(server){
-    return mongoose.connect(server)
+function connectMONGODB(uri){
+    return mongoose.connect(uri)
 }
 
 module.exports=connectMONGODB
